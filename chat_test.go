@@ -235,10 +235,11 @@ func handleChatCompletionEndpoint(w http.ResponseWriter, r *http.Request) {
 	}
 	// create completions
 	n := completionReq.N
-	if n == 0 {
-		n = 1
+	if n == nil || *n == 0 {
+		v := 1
+		n = &v
 	}
-	for i := 0; i < n; i++ {
+	for i := 0; i < *n; i++ {
 		// if there are functions, include them
 		if len(completionReq.Functions) > 0 {
 			var fcb []byte
@@ -273,8 +274,8 @@ func handleChatCompletionEndpoint(w http.ResponseWriter, r *http.Request) {
 			Index: i,
 		})
 	}
-	inputTokens := numTokens(completionReq.Messages[0].Content) * n
-	completionTokens := completionReq.MaxTokens * n
+	inputTokens := numTokens(completionReq.Messages[0].Content) * (*n)
+	completionTokens := completionReq.MaxTokens * (*n)
 	res.Usage = Usage{
 		PromptTokens:     inputTokens,
 		CompletionTokens: completionTokens,
