@@ -123,10 +123,10 @@ type Embedding struct {
 
 // EmbeddingResponse is the response from a Create embeddings request.
 type EmbeddingResponse struct {
-	Object string         `json:"object"`
-	Data   []Embedding    `json:"data"`
-	Model  EmbeddingModel `json:"model"`
-	Usage  Usage          `json:"usage"`
+	Object string      `json:"object"`
+	Data   []Embedding `json:"data"`
+	Model  string      `json:"model"`
+	Usage  Usage       `json:"usage"`
 }
 
 type EmbeddingRequestConverter interface {
@@ -135,9 +135,9 @@ type EmbeddingRequestConverter interface {
 }
 
 type EmbeddingRequest struct {
-	Input any            `json:"input"`
-	Model EmbeddingModel `json:"model"`
-	User  string         `json:"user"`
+	Input any    `json:"input"`
+	Model string `json:"model"`
+	User  string `json:"user"`
 }
 
 func (r EmbeddingRequest) Convert() EmbeddingRequest {
@@ -155,7 +155,7 @@ type EmbeddingRequestStrings struct {
 	Input []string `json:"input"`
 	// ID of the model to use. You can use the List models API to see all of your available models,
 	// or see our Model overview for descriptions of them.
-	Model EmbeddingModel `json:"model"`
+	Model string `json:"model"`
 	// A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
 	User string `json:"user"`
 }
@@ -178,7 +178,7 @@ type EmbeddingRequestTokens struct {
 	Input [][]int `json:"input"`
 	// ID of the model to use. You can use the List models API to see all of your available models,
 	// or see our Model overview for descriptions of them.
-	Model EmbeddingModel `json:"model"`
+	Model string `json:"model"`
 	// A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse.
 	User string `json:"user"`
 }
@@ -198,7 +198,7 @@ func (r EmbeddingRequestTokens) Convert() EmbeddingRequest {
 // for embedding groups of text already converted to tokens.
 func (c *Client) CreateEmbeddings(ctx context.Context, conv EmbeddingRequestConverter) (res EmbeddingResponse, err error) { //nolint:lll
 	baseReq := conv.Convert()
-	req, err := c.newRequest(ctx, http.MethodPost, c.fullURL("/embeddings", baseReq.Model.String()), withBody(baseReq))
+	req, err := c.newRequest(ctx, http.MethodPost, c.fullURL("/embeddings", baseReq.Model), withBody(baseReq))
 	if err != nil {
 		return
 	}
