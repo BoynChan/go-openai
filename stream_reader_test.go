@@ -20,7 +20,7 @@ func (*failingUnMarshaller) Unmarshal(_ []byte, _ any) error {
 }
 
 func TestStreamReaderReturnsUnmarshalerErrors(t *testing.T) {
-	stream := &streamReader[ChatCompletionStreamResponse]{
+	stream := &StreamReader[ChatCompletionStreamResponse]{
 		errAccumulator: utils.NewErrorAccumulator(),
 		unmarshaler:    &failingUnMarshaller{},
 	}
@@ -42,7 +42,7 @@ func TestStreamReaderReturnsUnmarshalerErrors(t *testing.T) {
 }
 
 func TestStreamReaderReturnsErrTooManyEmptyStreamMessages(t *testing.T) {
-	stream := &streamReader[ChatCompletionStreamResponse]{
+	stream := &StreamReader[ChatCompletionStreamResponse]{
 		emptyMessagesLimit: 3,
 		reader:             bufio.NewReader(bytes.NewReader([]byte("\n\n\n\n"))),
 		errAccumulator:     utils.NewErrorAccumulator(),
@@ -53,7 +53,7 @@ func TestStreamReaderReturnsErrTooManyEmptyStreamMessages(t *testing.T) {
 }
 
 func TestStreamReaderReturnsErrTestErrorAccumulatorWriteFailed(t *testing.T) {
-	stream := &streamReader[ChatCompletionStreamResponse]{
+	stream := &StreamReader[ChatCompletionStreamResponse]{
 		reader: bufio.NewReader(bytes.NewReader([]byte("\n"))),
 		errAccumulator: &utils.DefaultErrorAccumulator{
 			Buffer: &test.FailingErrorBuffer{},

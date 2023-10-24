@@ -38,7 +38,7 @@ func TestEmbedding(t *testing.T) {
 				"The food was delicious and the waiter",
 				"Other examples of embedding request",
 			},
-			Model: model,
+			Model: model.String(),
 		}
 		// marshal embeddingReq to JSON and confirm that the model field equals
 		// the AdaSearchQuery type
@@ -54,7 +54,7 @@ func TestEmbedding(t *testing.T) {
 				"The food was delicious and the waiter",
 				"Other examples of embedding request",
 			},
-			Model: model,
+			Model: model.String(),
 		}
 		marshaled, err = json.Marshal(embeddingReqStrings)
 		checks.NoError(t, err, "Could not marshal embedding request")
@@ -68,7 +68,7 @@ func TestEmbedding(t *testing.T) {
 				{464, 2057, 373, 12625, 290, 262, 46612},
 				{6395, 6096, 286, 11525, 12083, 2581},
 			},
-			Model: model,
+			Model: model.String(),
 		}
 		marshaled, err = json.Marshal(embeddingReqTokens)
 		checks.NoError(t, err, "Could not marshal embedding request")
