@@ -133,11 +133,11 @@ func sendRequestStream[T Streamable](client *Client, req *http.Request) (*Stream
 		return new(StreamReader[T]), client.handleErrorResp(resp)
 	}
 	return &StreamReader[T]{
-		emptyMessagesLimit: client.config.EmptyMessagesLimit,
-		reader:             bufio.NewReader(resp.Body),
-		response:           resp,
-		errAccumulator:     utils.NewErrorAccumulator(),
-		unmarshaler:        &utils.JSONUnmarshaler{},
+		EmptyMessagesLimit: client.config.EmptyMessagesLimit,
+		Reader:             bufio.NewReader(resp.Body),
+		Response:           resp,
+		ErrAccumulator:     utils.NewErrorAccumulator(),
+		Unmarshaler:        &utils.JSONUnmarshaler{},
 	}, nil
 }
 

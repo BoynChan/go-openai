@@ -21,8 +21,8 @@ func (*failingUnMarshaller) Unmarshal(_ []byte, _ any) error {
 
 func TestStreamReaderReturnsUnmarshalerErrors(t *testing.T) {
 	stream := &StreamReader[ChatCompletionStreamResponse]{
-		errAccumulator: utils.NewErrorAccumulator(),
-		unmarshaler:    &failingUnMarshaller{},
+		ErrAccumulator: utils.NewErrorAccumulator(),
+		Unmarshaler:    &failingUnMarshaller{},
 	}
 
 	respErr := stream.unmarshalError()
@@ -30,7 +30,7 @@ func TestStreamReaderReturnsUnmarshalerErrors(t *testing.T) {
 		t.Fatalf("Did not return nil with empty buffer: %v", respErr)
 	}
 
-	err := stream.errAccumulator.Write([]byte("{"))
+	err := stream.ErrAccumulator.Write([]byte("{"))
 	if err != nil {
 		t.Fatalf("%+v", err)
 	}
@@ -43,10 +43,10 @@ func TestStreamReaderReturnsUnmarshalerErrors(t *testing.T) {
 
 func TestStreamReaderReturnsErrTooManyEmptyStreamMessages(t *testing.T) {
 	stream := &StreamReader[ChatCompletionStreamResponse]{
-		emptyMessagesLimit: 3,
-		reader:             bufio.NewReader(bytes.NewReader([]byte("\n\n\n\n"))),
-		errAccumulator:     utils.NewErrorAccumulator(),
-		unmarshaler:        &utils.JSONUnmarshaler{},
+		EmptyMessagesLimit: 3,
+		Reader:             bufio.NewReader(bytes.NewReader([]byte("\n\n\n\n"))),
+		ErrAccumulator:     utils.NewErrorAccumulator(),
+		Unmarshaler:        &utils.JSONUnmarshaler{},
 	}
 	_, err := stream.Recv()
 	checks.ErrorIs(t, err, ErrTooManyEmptyStreamMessages, "Did not return error when recv failed", err.Error())
@@ -54,11 +54,11 @@ func TestStreamReaderReturnsErrTooManyEmptyStreamMessages(t *testing.T) {
 
 func TestStreamReaderReturnsErrTestErrorAccumulatorWriteFailed(t *testing.T) {
 	stream := &StreamReader[ChatCompletionStreamResponse]{
-		reader: bufio.NewReader(bytes.NewReader([]byte("\n"))),
-		errAccumulator: &utils.DefaultErrorAccumulator{
+		Reader: bufio.NewReader(bytes.NewReader([]byte("\n"))),
+		ErrAccumulator: &utils.DefaultErrorAccumulator{
 			Buffer: &test.FailingErrorBuffer{},
 		},
-		unmarshaler: &utils.JSONUnmarshaler{},
+		Unmarshaler: &utils.JSONUnmarshaler{},
 	}
 	_, err := stream.Recv()
 	checks.ErrorIs(t, err, test.ErrTestErrorAccumulatorWriteFailed, "Did not return error when write failed", err.Error())
