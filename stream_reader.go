@@ -15,11 +15,11 @@ var (
 	errorPrefix = []byte(`data: {"error":`)
 )
 
-type streamable interface {
+type Streamable interface {
 	ChatCompletionStreamResponse | CompletionResponse
 }
 
-type streamReader[T streamable] struct {
+type StreamReader[T Streamable] struct {
 	emptyMessagesLimit uint
 	isFinished         bool
 
@@ -29,7 +29,7 @@ type streamReader[T streamable] struct {
 	unmarshaler    utils.Unmarshaler
 }
 
-func (stream *streamReader[T]) Recv() (response T, err error) {
+func (stream *StreamReader[T]) Recv() (response T, err error) {
 	if stream.isFinished {
 		err = io.EOF
 		return
@@ -40,7 +40,7 @@ func (stream *streamReader[T]) Recv() (response T, err error) {
 }
 
 //nolint:gocognit
-func (stream *streamReader[T]) processLines() (T, error) {
+func (stream *StreamReader[T]) processLines() (T, error) {
 	var (
 		emptyMessagesCount uint
 		hasErrorPrefix     bool
@@ -92,7 +92,7 @@ func (stream *streamReader[T]) processLines() (T, error) {
 	}
 }
 
-func (stream *streamReader[T]) unmarshalError() (errResp *ErrorResponse) {
+func (stream *StreamReader[T]) unmarshalError() (errResp *ErrorResponse) {
 	errBytes := stream.errAccumulator.Bytes()
 	if len(errBytes) == 0 {
 		return
@@ -106,6 +106,6 @@ func (stream *streamReader[T]) unmarshalError() (errResp *ErrorResponse) {
 	return
 }
 
-func (stream *streamReader[T]) Close() {
+func (stream *StreamReader[T]) Close() {
 	stream.response.Body.Close()
 }
