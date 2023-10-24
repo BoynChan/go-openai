@@ -20,13 +20,13 @@ type Streamable interface {
 }
 
 type StreamReader[T Streamable] struct {
-	emptyMessagesLimit uint
+	EmptyMessagesLimit uint
 	isFinished         bool
 
-	reader         *bufio.Reader
-	response       *http.Response
-	errAccumulator utils.ErrorAccumulator
-	unmarshaler    utils.Unmarshaler
+	Reader         *bufio.Reader
+	Response       *http.Response
+	ErrAccumulator utils.ErrorAccumulator
+	Unmarshaler    utils.Unmarshaler
 }
 
 func (stream *StreamReader[T]) Recv() (response T, err error) {
@@ -47,7 +47,7 @@ func (stream *StreamReader[T]) processLines() (T, error) {
 	)
 
 	for {
-		rawLine, readErr := stream.reader.ReadBytes('\n')
+		rawLine, readErr := stream.Reader.ReadBytes('\n')
 		if readErr != nil || hasErrorPrefix {
 			respErr := stream.unmarshalError()
 			if respErr != nil {
@@ -64,12 +64,12 @@ func (stream *StreamReader[T]) processLines() (T, error) {
 			if hasErrorPrefix {
 				noSpaceLine = bytes.TrimPrefix(noSpaceLine, headerData)
 			}
-			writeErr := stream.errAccumulator.Write(noSpaceLine)
+			writeErr := stream.ErrAccumulator.Write(noSpaceLine)
 			if writeErr != nil {
 				return *new(T), writeErr
 			}
 			emptyMessagesCount++
-			if emptyMessagesCount > stream.emptyMessagesLimit {
+			if emptyMessagesCount > stream.EmptyMessagesLimit {
 				return *new(T), ErrTooManyEmptyStreamMessages
 			}
 
@@ -83,7 +83,7 @@ func (stream *StreamReader[T]) processLines() (T, error) {
 		}
 
 		var response T
-		unmarshalErr := stream.unmarshaler.Unmarshal(noPrefixLine, &response)
+		unmarshalErr := stream.Unmarshaler.Unmarshal(noPrefixLine, &response)
 		if unmarshalErr != nil {
 			return *new(T), unmarshalErr
 		}
@@ -93,12 +93,12 @@ func (stream *StreamReader[T]) processLines() (T, error) {
 }
 
 func (stream *StreamReader[T]) unmarshalError() (errResp *ErrorResponse) {
-	errBytes := stream.errAccumulator.Bytes()
+	errBytes := stream.ErrAccumulator.Bytes()
 	if len(errBytes) == 0 {
 		return
 	}
 
-	err := stream.unmarshaler.Unmarshal(errBytes, &errResp)
+	err := stream.Unmarshaler.Unmarshal(errBytes, &errResp)
 	if err != nil {
 		errResp = nil
 	}
@@ -107,5 +107,5 @@ func (stream *StreamReader[T]) unmarshalError() (errResp *ErrorResponse) {
 }
 
 func (stream *StreamReader[T]) Close() {
-	stream.response.Body.Close()
+	stream.Response.Body.Close()
 }
