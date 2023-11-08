@@ -1,3 +1,3 @@
-module github.com/myshell-ai/go-openai
+module github.com/BoynChan/go-openai
 
 go 1.18
