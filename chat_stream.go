@@ -38,7 +38,7 @@ type ChatCompletionStreamResponse struct {
 	Model             string                       `json:"model"`
 	Choices           []ChatCompletionStreamChoice `json:"choices"`
 	PromptAnnotations []PromptAnnotation           `json:"prompt_annotations,omitempty"`
-	Error             ChatCompletionStreamError    `json:"error"`
+	Error             *ChatCompletionStreamError   `json:"error"`
 }
 
 // ChatCompletionStream
