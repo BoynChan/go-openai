@@ -4,8 +4,8 @@ import (
 	"os"
 	"time"
 
-	. "github.com/myshell-ai/go-openai"
-	"github.com/myshell-ai/go-openai/internal/test/checks"
+	. "github.com/BoynChan/go-openai"
+	"github.com/BoynChan/go-openai/internal/test/checks"
 
 	"context"
 	"encoding/json"

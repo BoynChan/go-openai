@@ -1,5 +1,5 @@
 A similar PR may already be submitted!
-Please search among the [Pull request](https://github.com/myshell-ai/go-openai/pulls) before creating one.
+Please search among the [Pull request](https://github.com/BoynChan/go-openai/pulls) before creating one.
 
 If your changes introduce breaking changes, please prefix the title of your pull request with "[BREAKING_CHANGES]". This allows for clear identification of such changes in the 'What's Changed' section on the release page, making it developer-friendly.
 
@@ -12,7 +12,7 @@ Please provide a clear and concise description of the changes you're proposing. 
 Describe how your changes address the problem or how they add the feature. This should include a brief description of your approach and any new libraries or dependencies you're using.
 
 **Tests**
-Briefly describe how you have tested these changes. 
+Briefly describe how you have tested these changes.
 
 **Additional context**
 Add any other context or screenshots or logs about your pull request here. If the pull request relates to an open issue, please link to it.

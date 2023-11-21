@@ -7,28 +7,28 @@ import (
 	"io"
 	"net/http"
 
-	utils "github.com/myshell-ai/go-openai/internal"
+	utils "github.com/BoynChan/go-openai/internal"
 )
 
 var (
 	headerData = []byte("data: ")
 )
 
-type streamable interface {
+type Streamable interface {
 	ChatCompletionStreamResponse | CompletionResponse
 }
 
-type streamReader[T streamable] struct {
-	emptyMessagesLimit uint
+type StreamReader[T Streamable] struct {
+	EmptyMessagesLimit uint
 	isFinished         bool
 
-	reader         *bufio.Reader
-	response       *http.Response
-	errAccumulator utils.ErrorAccumulator
-	unmarshaler    utils.Unmarshaler
+	Reader         *bufio.Reader
+	Response       *http.Response
+	ErrAccumulator utils.ErrorAccumulator
+	Unmarshaler    utils.Unmarshaler
 }
 
-func (stream *streamReader[T]) Recv() (response T, err error) {
+func (stream *StreamReader[T]) Recv() (response T, err error) {
 	if stream.isFinished {
 		err = io.EOF
 		return
@@ -39,13 +39,13 @@ func (stream *streamReader[T]) Recv() (response T, err error) {
 }
 
 //nolint:gocognit
-func (stream *streamReader[T]) processLines() (T, error) {
+func (stream *StreamReader[T]) processLines() (T, error) {
 	var (
 		emptyMessagesCount uint
 	)
 
 	for {
-		rawLine, readErr := stream.reader.ReadBytes('\n')
+		rawLine, readErr := stream.Reader.ReadBytes('\n')
 		if readErr != nil {
 			respErr := stream.unmarshalError()
 			if respErr != nil {
@@ -56,12 +56,12 @@ func (stream *streamReader[T]) processLines() (T, error) {
 
 		noSpaceLine := bytes.TrimSpace(rawLine)
 		if !bytes.HasPrefix(noSpaceLine, headerData) {
-			writeErr := stream.errAccumulator.Write(noSpaceLine)
+			writeErr := stream.ErrAccumulator.Write(noSpaceLine)
 			if writeErr != nil {
 				return *new(T), writeErr
 			}
 			emptyMessagesCount++
-			if emptyMessagesCount > stream.emptyMessagesLimit {
+			if emptyMessagesCount > stream.EmptyMessagesLimit {
 				return *new(T), ErrTooManyEmptyStreamMessages
 			}
 
@@ -75,7 +75,7 @@ func (stream *streamReader[T]) processLines() (T, error) {
 		}
 
 		var response T
-		unmarshalErr := stream.unmarshaler.Unmarshal(noPrefixLine, &response)
+		unmarshalErr := stream.Unmarshaler.Unmarshal(noPrefixLine, &response)
 		if unmarshalErr != nil {
 			return *new(T), unmarshalErr
 		}
@@ -84,13 +84,13 @@ func (stream *streamReader[T]) processLines() (T, error) {
 	}
 }
 
-func (stream *streamReader[T]) unmarshalError() (errResp *ErrorResponse) {
-	errBytes := stream.errAccumulator.Bytes()
+func (stream *StreamReader[T]) unmarshalError() (errResp *ErrorResponse) {
+	errBytes := stream.ErrAccumulator.Bytes()
 	if len(errBytes) == 0 {
 		return
 	}
 
-	err := stream.unmarshaler.Unmarshal(errBytes, &errResp)
+	err := stream.Unmarshaler.Unmarshal(errBytes, &errResp)
 	if err != nil {
 		errResp = nil
 	}
@@ -98,6 +98,6 @@ func (stream *streamReader[T]) unmarshalError() (errResp *ErrorResponse) {
 	return
 }
 
-func (stream *streamReader[T]) Close() {
-	stream.response.Body.Close()
+func (stream *StreamReader[T]) Close() {
+	stream.Response.Body.Close()
 }

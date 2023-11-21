@@ -1,22 +1,23 @@
 # Go OpenAI
-[![Go Reference](https://pkg.go.dev/badge/github.com/myshell-ai/go-openai.svg)](https://pkg.go.dev/github.com/myshell-ai/go-openai)
-[![Go Report Card](https://goreportcard.com/badge/github.com/myshell-ai/go-openai)](https://goreportcard.com/report/github.com/myshell-ai/go-openai)
+
+[![Go Reference](https://pkg.go.dev/badge/github.com/BoynChan/go-openai.svg)](https://pkg.go.dev/github.com/BoynChan/go-openai)
+[![Go Report Card](https://goreportcard.com/badge/github.com/BoynChan/go-openai)](https://goreportcard.com/report/github.com/BoynChan/go-openai)
 [![codecov](https://codecov.io/gh/sashabaranov/go-openai/branch/master/graph/badge.svg?token=bCbIfHLIsW)](https://codecov.io/gh/sashabaranov/go-openai)
 
-This library provides unofficial Go clients for [OpenAI API](https://platform.openai.com/). We support: 
+This library provides unofficial Go clients for [OpenAI API](https://platform.openai.com/). We support:
 
-* ChatGPT
-* GPT-3, GPT-4
-* DALL·E 2
-* Whisper
+- ChatGPT
+- GPT-3, GPT-4
+- DALL·E 2
+- Whisper
 
 ## Installation
 
 ```
-go get github.com/myshell-ai/go-openai
+go get github.com/BoynChan/go-openai
 ```
-Currently, go-openai requires Go version 1.18 or greater.
 
+Currently, go-openai requires Go version 1.18 or greater.
 
 ## Usage
 
@@ -28,7 +29,7 @@ package main
 import (
 	"context"
 	"fmt"
-	openai "github.com/myshell-ai/go-openai"
+	openai "github.com/BoynChan/go-openai"
 )
 
 func main() {
@@ -80,7 +81,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	openai "github.com/myshell-ai/go-openai"
+	openai "github.com/BoynChan/go-openai"
 )
 
 func main() {
@@ -122,6 +123,7 @@ func main() {
 	}
 }
 ```
+
 </details>
 
 <details>
@@ -133,7 +135,7 @@ package main
 import (
 	"context"
 	"fmt"
-	openai "github.com/myshell-ai/go-openai"
+	openai "github.com/BoynChan/go-openai"
 )
 
 func main() {
@@ -153,6 +155,7 @@ func main() {
 	fmt.Println(resp.Choices[0].Text)
 }
 ```
+
 </details>
 
 <details>
@@ -166,7 +169,7 @@ import (
 	"context"
 	"fmt"
 	"io"
-	openai "github.com/myshell-ai/go-openai"
+	openai "github.com/BoynChan/go-openai"
 )
 
 func main() {
@@ -203,6 +206,7 @@ func main() {
 	}
 }
 ```
+
 </details>
 
 <details>
@@ -215,7 +219,7 @@ import (
 	"context"
 	"fmt"
 
-	openai "github.com/myshell-ai/go-openai"
+	openai "github.com/BoynChan/go-openai"
 )
 
 func main() {
@@ -234,6 +238,7 @@ func main() {
 	fmt.Println(resp.Text)
 }
 ```
+
 </details>
 
 <details>
@@ -247,7 +252,7 @@ import (
 	"fmt"
 	"os"
 
-	openai "github.com/myshell-ai/go-openai"
+	openai "github.com/BoynChan/go-openai"
 )
 
 func main() {
@@ -275,6 +280,7 @@ func main() {
 	}
 }
 ```
+
 </details>
 
 <details>
@@ -288,7 +294,7 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	openai "github.com/myshell-ai/go-openai"
+	openai "github.com/BoynChan/go-openai"
 	"image/png"
 	"os"
 )
@@ -355,6 +361,7 @@ func main() {
 }
 
 ```
+
 </details>
 
 <details>
@@ -376,7 +383,8 @@ config.HTTPClient = &http.Client{
 c := openai.NewClientWithConfig(config)
 ```
 
-See also: https://pkg.go.dev/github.com/myshell-ai/go-openai#ClientConfig
+See also: https://pkg.go.dev/github.com/BoynChan/go-openai#ClientConfig
+
 </details>
 
 <details>
@@ -392,7 +400,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/myshell-ai/go-openai"
+	"github.com/BoynChan/go-openai"
 )
 
 func main() {
@@ -434,6 +442,7 @@ func main() {
 	}
 }
 ```
+
 </details>
 
 <details>
@@ -446,7 +455,7 @@ import (
 	"context"
 	"fmt"
 
-	openai "github.com/myshell-ai/go-openai"
+	openai "github.com/BoynChan/go-openai"
 )
 
 func main() {
@@ -481,6 +490,7 @@ func main() {
 }
 
 ```
+
 </details>
 
 <details>
@@ -493,7 +503,7 @@ import (
 	"context"
 	"fmt"
 
-	openai "github.com/myshell-ai/go-openai"
+	openai "github.com/BoynChan/go-openai"
 )
 
 func main() {
@@ -529,6 +539,7 @@ func main() {
 	fmt.Println(vectors[:10], "...", vectors[len(vectors)-10:])
 }
 ```
+
 </details>
 
 <details>
@@ -542,26 +553,21 @@ The developer documents give this JSON schema definition as an example:
 
 ```json
 {
-  "name":"get_current_weather",
-  "description":"Get the current weather in a given location",
-  "parameters":{
-    "type":"object",
-    "properties":{
-        "location":{
-          "type":"string",
-          "description":"The city and state, e.g. San Francisco, CA"
-        },
-        "unit":{
-          "type":"string",
-          "enum":[
-              "celsius",
-              "fahrenheit"
-          ]
-        }
+  "name": "get_current_weather",
+  "description": "Get the current weather in a given location",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "location": {
+        "type": "string",
+        "description": "The city and state, e.g. San Francisco, CA"
+      },
+      "unit": {
+        "type": "string",
+        "enum": ["celsius", "fahrenheit"]
+      }
     },
-    "required":[
-        "location"
-    ]
+    "required": ["location"]
   }
 }
 ```
@@ -589,6 +595,7 @@ FunctionDefinition{
 ```
 
 The `Parameters` field of a `FunctionDefinition` can accept either of the above styles, or even a nested struct from another library (as long as it can be marshalled into JSON).
+
 </details>
 
 <details>
@@ -597,6 +604,7 @@ The `Parameters` field of a `FunctionDefinition` can accept either of the above 
 Open-AI maintains clear documentation on how to [handle API errors](https://platform.openai.com/docs/guides/error-codes/api-errors)
 
 example:
+
 ```
 e := &openai.APIError{}
 if errors.As(err, &e) {
@@ -604,7 +612,7 @@ if errors.As(err, &e) {
     case 401:
       // invalid auth or key (do not retry)
     case 429:
-      // rate limiting or engine overload (wait and retry) 
+      // rate limiting or engine overload (wait and retry)
     case 500:
       // openai server error (retry)
     default:
@@ -613,6 +621,7 @@ if errors.As(err, &e) {
 }
 
 ```
+
 </details>
 
 <details>
@@ -624,7 +633,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/myshell-ai/go-openai"
+	"github.com/BoynChan/go-openai"
 )
 
 func main() {
@@ -686,6 +695,7 @@ func main() {
 	// fmt.Println(resp.Choices[0].Text)
 }
 ```
+
 </details>
 See the `examples/` folder for more.
 
@@ -701,32 +711,35 @@ Even when specifying a temperature field of 0, it doesn't guarantee that you'll 
 Due to the factors mentioned above, different answers may be returned even for the same question.
 
 **Workarounds:**
+
 1. Using `math.SmallestNonzeroFloat32`: By specifying `math.SmallestNonzeroFloat32` in the temperature field instead of 0, you can mimic the behavior of setting it to 0.
 2. Limiting Token Count: By limiting the number of tokens in the input and output and especially avoiding large requests close to 32k tokens, you can reduce the risk of non-deterministic behavior.
 
 By adopting these strategies, you can expect more consistent results.
 
 **Related Issues:**  
-[omitempty option of request struct will generate incorrect request when parameter is 0.](https://github.com/myshell-ai/go-openai/issues/9)
+[omitempty option of request struct will generate incorrect request when parameter is 0.](https://github.com/BoynChan/go-openai/issues/9)
 
 ### Does Go OpenAI provide a method to count tokens?
 
 No, Go OpenAI does not offer a feature to count tokens, and there are no plans to provide such a feature in the future. However, if there's a way to implement a token counting feature with zero dependencies, it might be possible to merge that feature into Go OpenAI. Otherwise, it would be more appropriate to implement it in a dedicated library or repository.
 
-For counting tokens, you might find the following links helpful:  
+For counting tokens, you might find the following links helpful:
+
 - [Counting Tokens For Chat API Calls](https://github.com/pkoukk/tiktoken-go#counting-tokens-for-chat-api-calls)
 - [How to count tokens with tiktoken](https://github.com/openai/openai-cookbook/blob/main/examples/How_to_count_tokens_with_tiktoken.ipynb)
 
 **Related Issues:**  
-[Is it possible to join the implementation of GPT3 Tokenizer](https://github.com/myshell-ai/go-openai/issues/62)
+[Is it possible to join the implementation of GPT3 Tokenizer](https://github.com/BoynChan/go-openai/issues/62)
 
 ## Contributing
 
-By following [Contributing Guidelines](https://github.com/myshell-ai/go-openai/blob/master/CONTRIBUTING.md), we hope to ensure that your contributions are made smoothly and efficiently.
+By following [Contributing Guidelines](https://github.com/BoynChan/go-openai/blob/master/CONTRIBUTING.md), we hope to ensure that your contributions are made smoothly and efficiently.
 
 ## Thank you
 
-We want to take a moment to express our deepest gratitude to the [contributors](https://github.com/myshell-ai/go-openai/graphs/contributors) and sponsors of this project:
+We want to take a moment to express our deepest gratitude to the [contributors](https://github.com/BoynChan/go-openai/graphs/contributors) and sponsors of this project:
+
 - [Carson Kahn](https://carsonkahn.com) of [Spindle AI](https://spindleai.com)
 
 To all of you: thank you. You've helped us achieve more than we ever imagined possible. Can't wait to see where we go next, together!
