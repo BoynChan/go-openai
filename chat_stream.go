@@ -18,6 +18,19 @@ type ChatCompletionStreamChoice struct {
 	ContentFilterResults ContentFilterResults            `json:"content_filter_results,omitempty"`
 }
 
+// ChatCompletionStreamError 某些模型会出现如下错误
+//
+//	{
+//	    "error": {
+//	        "message": "Anthropic: Claude v2 requires moderation. Your input was flagged for \"xxxx\". No credits were charged.\n The flagged input was: \"xxxx\"",
+//	        "code": 403
+//	    }
+//	}
+type ChatCompletionStreamError struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+}
+
 type ChatCompletionStreamResponse struct {
 	ID                string                       `json:"id"`
 	Object            string                       `json:"object"`
@@ -25,6 +38,7 @@ type ChatCompletionStreamResponse struct {
 	Model             string                       `json:"model"`
 	Choices           []ChatCompletionStreamChoice `json:"choices"`
 	PromptAnnotations []PromptAnnotation           `json:"prompt_annotations,omitempty"`
+	Error             ChatCompletionStreamError    `json:"error"`
 }
 
 // ChatCompletionStream
