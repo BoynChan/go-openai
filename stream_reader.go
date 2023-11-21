@@ -11,8 +11,7 @@ import (
 )
 
 var (
-	headerData  = []byte("data: ")
-	errorPrefix = []byte(`data: {"error":`)
+	headerData = []byte("data: ")
 )
 
 type Streamable interface {
@@ -43,12 +42,11 @@ func (stream *StreamReader[T]) Recv() (response T, err error) {
 func (stream *StreamReader[T]) processLines() (T, error) {
 	var (
 		emptyMessagesCount uint
-		hasErrorPrefix     bool
 	)
 
 	for {
 		rawLine, readErr := stream.Reader.ReadBytes('\n')
-		if readErr != nil || hasErrorPrefix {
+		if readErr != nil {
 			respErr := stream.unmarshalError()
 			if respErr != nil {
 				return *new(T), fmt.Errorf("error, %w", respErr.Error)
@@ -57,13 +55,7 @@ func (stream *StreamReader[T]) processLines() (T, error) {
 		}
 
 		noSpaceLine := bytes.TrimSpace(rawLine)
-		if bytes.HasPrefix(noSpaceLine, errorPrefix) {
-			hasErrorPrefix = true
-		}
-		if !bytes.HasPrefix(noSpaceLine, headerData) || hasErrorPrefix {
-			if hasErrorPrefix {
-				noSpaceLine = bytes.TrimPrefix(noSpaceLine, headerData)
-			}
+		if !bytes.HasPrefix(noSpaceLine, headerData) {
 			writeErr := stream.ErrAccumulator.Write(noSpaceLine)
 			if writeErr != nil {
 				return *new(T), writeErr
