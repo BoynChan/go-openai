@@ -113,10 +113,14 @@ type ChatCompletionRequest struct {
 	// LogitBias is must be a token id string (specified by their token ID in the tokenizer), not a word string.
 	// incorrect: `"logit_bias":{"You": 6}`, correct: `"logit_bias":{"1639": 6}`
 	// refs: https://platform.openai.com/docs/api-reference/chat/create#chat/create-logit_bias
-	LogitBias    map[string]int       `json:"logit_bias,omitempty"`
-	User         string               `json:"user,omitempty"`
-	Functions    []FunctionDefinition `json:"functions,omitempty"`
-	FunctionCall any                  `json:"function_call,omitempty"`
+	LogitBias map[string]int `json:"logit_bias,omitempty"`
+	// An object specifying the format that the model must output.
+	// Setting to { "type": "json_object" } enables JSON mode, which guarantees the message the model generates is valid JSON.
+	// type Must be one of text or json_object.
+	ResponseFormat map[string]string    `json:"response_format,omitempty"`
+	User           string               `json:"user,omitempty"`
+	Functions      []FunctionDefinition `json:"functions,omitempty"`
+	FunctionCall   any                  `json:"function_call,omitempty"`
 }
 
 func (m ChatCompletionMessage) MarshalJSON() ([]byte, error) {
