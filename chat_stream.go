@@ -39,6 +39,11 @@ type ChatCompletionStreamResponse struct {
 	Choices           []ChatCompletionStreamChoice `json:"choices"`
 	PromptAnnotations []PromptAnnotation           `json:"prompt_annotations,omitempty"`
 	Error             *ChatCompletionStreamError   `json:"error"`
+	// === myshell only fields. 这些字段用于在myshell部分接入的LLM供应商api中, 需要传递除了文字的其他信息 === //
+	// 这个可以在organics代码中做一些enum定义
+	ExtraType string
+	// 这个用JSON表示, 可以用这个传到外部
+	ExtraData string
 }
 
 // ChatCompletionStream
